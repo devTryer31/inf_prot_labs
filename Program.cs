@@ -4,8 +4,11 @@ namespace code
 {
     class Program
     {
-        public static void Main(string[] args){
-            lab1.task3();
+        public static void Main(string[] args)
+        {
+            string entered_string = "КАФСИ 324";
+            System.Console.WriteLine("Entered string: {0}", entered_string);
+            lab2.task(entered_string);
         }
     }
 }
