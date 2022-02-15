@@ -6,7 +6,7 @@ namespace code
     {
         public static void Main(string[] args)
         {
-            string entered_string = "КАФСИ 324";
+            string entered_string = Console.ReadLine();
             System.Console.WriteLine("Entered string: {0}", entered_string);
             lab2.task(entered_string);
         }
