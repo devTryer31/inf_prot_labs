@@ -9,17 +9,20 @@ public static class lab2
 
     public static void task(string s)
     {
-        long p = 7, q = 13;
+        long p = 41, q = 17;
+        //long p = 7, q = 13;
+        //long p = 797, q = 613;
         long n = p * q;
 
         long f = (q - 1) * (p - 1);
 
-        long e = 5;
+        //long e = 5;//not hard
+        long e = getE(f);
 
         var open_key = (e, n);
 
         long k = 1;
-        double d = (k * f + 1) / 5d;
+        double d = (k * f + 1) / (double)e;
         for (int i = 2; i < int.MaxValue; ++i)
         {
             if (d % 1 == 0)
@@ -28,7 +31,7 @@ public static class lab2
                 break;
             }
 
-            d = (i * f + 1) / 5d;
+            d = (i * f + 1) / (double)e;
         }
 
         var cloused_key = (d, n);
@@ -63,20 +66,20 @@ public static class lab2
 
     }
 
-    public static int[] encryptString(string s, IDictionary<char, byte> relation_table, (long e, long n) open_key)
+    public static BigInteger[] encryptString(string s, IDictionary<char, byte> relation_table, (long e, long n) open_key)
     {
-        int[] res = new int[s.Length];
+        BigInteger[] res = new BigInteger[s.Length];
 
         for (int i = 0; i < s.Length; ++i)
         {
             char c = s[i];
             byte c_code = relation_table[c];
-            res[i] = (int)(Math.Pow(c_code, open_key.e) % open_key.n);
+            res[i] = BigInteger.Pow(c_code, (int)open_key.e) % open_key.n;
         }
         return res;
     }
 
-    public static string decryptArray(int[] arr, IDictionary<char, byte> relation_table, (double d, long n) cloused_key)
+    public static string decryptArray(BigInteger[] arr, IDictionary<char, byte> relation_table, (double d, long n) cloused_key)
     {
         StringBuilder sb = new(arr.Length);
         foreach (int ci in arr)
@@ -87,4 +90,44 @@ public static class lab2
         }
         return sb.ToString();
     }
+
+    private static int getE(long f){
+        Random rg = new();
+        long num = f;
+        List<int> dels = new();
+        int del = 2;
+        while(num != 1){//Can be more faster.
+            if(num % del == 0){
+                dels.Add(del);
+                while(num % del == 0)
+                    num /= del;
+            }
+            ++del;
+        }
+        
+        int res = 0;
+
+        long n = f;
+        bool[] prime = Enumerable.Repeat(true, (int)(n + 1)).ToArray();
+        prime[0] = prime[1] = false;
+        for(int i = 2; i <= n; ++i)
+            if(prime[i] && i > dels.Last()){
+                res = i;
+                break;
+            }
+            else
+                if(prime[i] && (long)i * i <= n)
+                    for(int j = i * i; j <=n; j+=i)
+                        prime[j] = false;
+
+        return res;
+
+        // for(int i = 0; i < prime.Length; ++i)
+        //     if(prime[i] && i > dels.Last()){
+        //         res = i;
+        //         break;
+        //     }
+
+
+    } 
 }
