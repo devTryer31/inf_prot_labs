@@ -86,7 +86,7 @@ public static class lab4
 	private static ulong toWord(byte[] b, in int offset)
 	{
 		ulong r = 0;
-		for (int i = b.Length / 2 - 1; i >= 0; --i) {
+		for (int i = 4 - 1; i >= 0; --i) {
 			r |= b[i + offset];
 			if (i != 0)
 				r <<= 8;
@@ -96,7 +96,7 @@ public static class lab4
 
 	private static void toBytes(ulong a, byte[] b, in int offset)
 	{
-		int len = b.Length / 2;
+		int len = 4;
 		for (int i = 0; i < len; ++i) {
 			b[i + offset] = (byte)(a & 0xFF);
 			if (i != len)
