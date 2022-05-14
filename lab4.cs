@@ -15,7 +15,7 @@ public static class lab4
 
 		generateKey(Encoding.UTF8.GetBytes(strKey));
 
-		byte[] textArray = alignment(File.ReadAllBytes(inputPath), ' ');
+		byte[] textArray = File.ReadAllBytes(inputPath);
 		Console.WriteLine("Input message " + new String(Encoding.UTF8.GetChars(textArray)));
 
 
@@ -57,10 +57,11 @@ public static class lab4
 		ulong data;
 		int j = 0, i;
 
+		//Key extending.
 		for (i = 0; i < 18; ++i) {
-			data = 0x00000011;
+			data = 0x3;
 			for (int k = 0; k < 4; ++k) {
-				data = (ulong)((int)(data << 8) | (key[j++] & 0xFF));
+				data = (data << 8) | (ulong)key[j++];
 				if (j >= key.Length)
 					j = 0;
 			}
@@ -149,17 +150,6 @@ public static class lab4
 			toBytes(rhs, data, p + 4);
 		}
 	}
-
-	private static byte[] alignment(byte[] a, int p)
-	{
-		int l = (a.Length | 7) + 1;
-		byte[] b = new byte[l];
-		for (int i = 0; i < b.Length; i++)
-			b[i] = (byte)p;
-		Array.Copy(a, 0, b, 0, a.Length);
-		return b;
-	}
-
 	private static void swap<T>(ref T lhs, ref T rhs)
 	{
 		T tmp = lhs;
